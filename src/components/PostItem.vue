@@ -5,7 +5,7 @@
             <div>{{ post.body }}</div>
         </div>
         <div class="post-btns">
-            <button>Удалить</button>
+            <button-custom @click="$emit('remove', post)">Delete</button-custom>
         </div>
     </div>
 </template>

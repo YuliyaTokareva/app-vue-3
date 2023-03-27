@@ -1,10 +1,16 @@
 <template>
-    <div>
-        <h3>Список</h3>
+    <div v-if="posts.length !== 0">
+        <h3>Posts</h3>
         <div class="posts">
-            <post-item v-for="post in posts" :post="post" />
+            <post-item
+                v-for="post in posts"
+                :post="post"
+                :key="post.id"
+                @remove="$emit('remove', post)"
+            />
         </div>
     </div>
+    <h3 v-else>There are no posts yet</h3>
 </template>
 <script>
 import PostItem from "./PostItem.vue";
