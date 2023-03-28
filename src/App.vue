@@ -24,7 +24,7 @@
         />
 
         <h3 v-else class="loading">Loading...</h3>
-        <div class="page__pagination">
+        <!-- <div class="page__pagination">
             <div
                 v-for="pageNumber in totalPages"
                 :key="pageNumber"
@@ -34,7 +34,8 @@
             >
                 {{ pageNumber }}
             </div>
-        </div>
+        </div> -->
+        <div ref="observer" class="observer"></div>
     </div>
 </template>
 <script>
@@ -75,10 +76,31 @@ export default {
         showDialog() {
             this.dialogVisible = true;
         },
-        changePage(pageNumber) {
-            this.page = pageNumber;
-        },
+        // changePage(pageNumber) {
+        //     this.page = pageNumber;
+        // },
 
+        async loadMorePosts() {
+            try {
+                this.page += 1;
+
+                const res = await axios.get(
+                    "https://jsonplaceholder.typicode.com/posts",
+                    {
+                        params: {
+                            _page: this.page,
+                            _limit: this.limitPost,
+                        },
+                    }
+                );
+                this.totalPages = Math.ceil(
+                    res.headers["x-total-count"] / this.limitPost
+                );
+                this.posts = [...this.posts, ...res.data];
+            } catch (e) {
+                console.log(e);
+            }
+        },
         async fetchPosts() {
             try {
                 this.isPostLoading = true;
@@ -106,6 +128,18 @@ export default {
     },
     mounted() {
         this.fetchPosts();
+        const options = {
+            rootMargin: "0px",
+            threshold: 1.0,
+        };
+
+        const callback = (entries, observer) => {
+            if (entries[0].isIntersecting && this.page < this.totalPages) {
+                this.loadMorePosts();
+            }
+        };
+        const observer = new IntersectionObserver(callback, options);
+        observer.observe(this.$refs.observer);
     },
     computed: {
         sortedPosts() {
@@ -123,9 +157,9 @@ export default {
         },
     },
     watch: {
-        page() {
-            this.fetchPosts();
-        },
+        // page() {
+        //     this.fetchPosts();
+        // },
     },
 };
 </script>
