@@ -13,11 +13,12 @@
             type="text"
             placeholder="Description"
         />
-        <button-custom @click="createPost" style="align-self: flex-end"
-            >Add</button-custom
-        >
+        <button-custom @click.prevent="createPost" style="align-self: flex-end">
+            Add
+        </button-custom>
     </form>
 </template>
+
 <script>
 export default {
     data() {
@@ -31,7 +32,7 @@ export default {
     methods: {
         createPost() {
             this.post.id = Date.now();
-            this.$emit("create", this.post, "some param");
+            this.$emit("create", this.post);
             this.post = {
                 title: "",
                 body: "",
@@ -40,6 +41,7 @@ export default {
     },
 };
 </script>
+
 <style scoped>
 form {
     display: flex;

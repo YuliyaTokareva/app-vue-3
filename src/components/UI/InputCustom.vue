@@ -17,6 +17,7 @@ export default {
 </script>
 <style scoped>
 .input {
-    height: 33px;
+    border: 1px solid #8000c9;
+    padding: 10px 15px;
 }
 </style>

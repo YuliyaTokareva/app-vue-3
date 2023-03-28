@@ -8,7 +8,6 @@ export default {
 </script>
 <style scoped>
 .btn {
-    height: 33px;
     cursor: pointer;
     background: none;
     border: 1px solid #8000c9;
